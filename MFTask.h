@@ -34,7 +34,11 @@
 //! Sets the Launch path to the executable used by the underlying NSTask
 - (void)setLaunchPath:(NSString *)path;
 
+//! Sets the standard input pipe used by NSTask
+- (void) setStandardInput:(NSPipe*) inputPipe;
 
 - (void) terminate;
+
+- (BOOL) isRunning;
 
 @end

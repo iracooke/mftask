@@ -45,9 +45,20 @@
 	[internal_task setLaunchPath:path];
 }
 
+//! Sets the standard input pipe used by NSTask
+- (void) setStandardInput:(NSPipe*) inputPipe {
+	[internal_task setStandardInput:inputPipe];
+}
+
+
 - (void) terminate {
 	[internal_task terminate];
 }
+
+- (BOOL) isRunning {
+	return	[internal_task isRunning];
+}
+
 
 
 - (void) giveDataToDelegate:(NSData*) data {
@@ -67,6 +78,7 @@
 	while ( [readData = [readHandle availableData] length]){		
 		[self performSelectorOnMainThread:@selector(giveDataToDelegate:) withObject:readData waitUntilDone:YES];
 	}
+	
 	[pool release];
 }
 

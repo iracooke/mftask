@@ -311,7 +311,7 @@
 							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>581 107 957 659 0 0 1280 778 </string>
+						<string>323 107 957 659 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -339,7 +339,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>755A252A112E6FF1001CE67F</string>
+										<string>755A2547112E739A001CE67F</string>
 										<key>history</key>
 										<array>
 											<string>756B1682112DEABA005F30C4</string>
@@ -352,7 +352,7 @@
 											<string>756B16B6112DECB6005F30C4</string>
 											<string>756B16B7112DECB6005F30C4</string>
 											<string>755A2528112E6FF1001CE67F</string>
-											<string>755A2529112E6FF1001CE67F</string>
+											<string>755A252A112E6FF1001CE67F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -366,7 +366,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {749, 613}}</string>
 								<key>RubberWindowFrame</key>
-								<string>581 107 957 659 0 0 1280 778 </string>
+								<string>323 107 957 659 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -386,7 +386,7 @@
 								<key>Frame</key>
 								<string>{{0, 618}, {749, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>581 107 957 659 0 0 1280 778 </string>
+								<string>323 107 957 659 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -410,9 +410,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>755A252B112E6FF1001CE67F</string>
+				<string>755A2548112E739A001CE67F</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>755A252C112E6FF1001CE67F</string>
+				<string>755A2549112E739A001CE67F</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -551,10 +551,10 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>756B164D112DE015005F30C4</string>
-		<string>/Users/iracooke/Sources/MFTask/MFTask.xcodeproj</string>
+		<string>/Users/iracooke/Sources/SharedCode/MFTask/MFTask.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>581 107 957 659 0 0 1280 778 </string>
+	<string>323 107 957 659 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -631,7 +631,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>756B164D112DE015005F30C4</string>
-				<string>755A252D112E6FF1001CE67F</string>
+				<string>755A254A112E739A001CE67F</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
