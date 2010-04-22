@@ -276,16 +276,6 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>7</integer>
-									<integer>6</integer>
-									<integer>0</integer>
-								</array>
-								<array>
-									<integer>8</integer>
-									<integer>6</integer>
-									<integer>0</integer>
-								</array>
-								<array>
 									<integer>9</integer>
 									<integer>6</integer>
 									<integer>0</integer>
@@ -327,7 +317,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MFTaskDelegateProtocol.h</string>
+								<string>MFTask.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -335,24 +325,24 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MFTaskDelegateProtocol.h</string>
+										<string>MFTask.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>755A2547112E739A001CE67F</string>
+										<string>7530311F118042C900C904EB</string>
 										<key>history</key>
 										<array>
-											<string>756B1682112DEABA005F30C4</string>
-											<string>756B1683112DEABA005F30C4</string>
-											<string>756B1684112DEABA005F30C4</string>
-											<string>756B1689112DEABA005F30C4</string>
-											<string>756B169A112DEB1A005F30C4</string>
-											<string>756B16AC112DEBEE005F30C4</string>
-											<string>756B16AE112DEBEE005F30C4</string>
-											<string>756B16B6112DECB6005F30C4</string>
-											<string>756B16B7112DECB6005F30C4</string>
-											<string>755A2528112E6FF1001CE67F</string>
-											<string>755A252A112E6FF1001CE67F</string>
+											<string>75303033118023F000C904EB</string>
+											<string>75303034118023F000C904EB</string>
+											<string>75303035118023F000C904EB</string>
+											<string>75303117118042C900C904EB</string>
+											<string>75303118118042C900C904EB</string>
+											<string>75303119118042C900C904EB</string>
+											<string>7530311A118042C900C904EB</string>
+											<string>7530311B118042C900C904EB</string>
+											<string>7530311C118042C900C904EB</string>
+											<string>7530311D118042C900C904EB</string>
+											<string>7530311E118042C900C904EB</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -410,9 +400,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>755A2548112E739A001CE67F</string>
+				<string>75303120118042C900C904EB</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>755A2549112E739A001CE67F</string>
+				<string>75303121118042C900C904EB</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -631,7 +621,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>756B164D112DE015005F30C4</string>
-				<string>755A254A112E739A001CE67F</string>
+				<string>75303122118042C900C904EB</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

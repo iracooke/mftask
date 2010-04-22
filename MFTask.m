@@ -21,6 +21,9 @@
 
 - (void) dealloc {
 	[internal_task release];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:internal_task];
+		
 	[super dealloc];
 }
 
@@ -65,21 +68,31 @@
 	[delegate taskDidRecieveData:data];
 }
 
+- (void) giveErrorDataToDelegate:(NSData*)data {
+	[delegate taskDidRecieveErrorData:data];
+}
+
 #pragma mark reading from NSTask output pipe
 - (void) waitForStandardOutputDataOnThread {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	[readingDataLock lock];
 	
 	NSAssert(internal_task,@"Must have a task");
 	NSFileHandle *readHandle = [[internal_task standardOutput] fileHandleForReading];
 	NSAssert(readHandle!=nil,@" Task must have a standardoutput handle");
 	
 
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSData *readData;	
 	while ( [readData = [readHandle availableData] length]){		
 		[self performSelectorOnMainThread:@selector(giveDataToDelegate:) withObject:readData waitUntilDone:YES];
 	}
 	
+	readingDataCondition++;
+	[readingDataLock signal];
+	[readingDataLock unlock];
 	[pool release];
+
 }
 
 // Detaches a thread to wait for output data
@@ -89,10 +102,70 @@
 }
 
 
+#pragma mark reading from NSTask error pipe
+- (void) waitForStandardErrorDataOnThread {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[readingErrorDataLock lock];
+	
+	NSAssert(internal_task,@"Must have a task");
+	NSFileHandle *readHandle = [[internal_task standardError] fileHandleForReading];
+	NSAssert(readHandle!=nil,@" Task must have a standarderror handle");
+	
+	
+	NSData *readData;	
+	while ( [readData = [readHandle availableData] length]){		
+		[self performSelectorOnMainThread:@selector(giveErrorDataToDelegate:) withObject:readData waitUntilDone:YES];
+	}
+	
+	readingErrorDataCondition++;
+	[readingErrorDataLock signal];
+	[readingErrorDataLock unlock];
+	[pool release];
+	
+}
+
+// Detaches a thread to wait for output data
+- (void) waitForStandardErrorData {
+	[NSThread detachNewThreadSelector:@selector(waitForStandardErrorDataOnThread)
+							 toTarget:self withObject:nil];
+}
+
+
+- (void) respondToTaskTerminationOnThread {
+	
+	// Wait until all data is read from the output pipe until we proceed
+	[readingDataLock lock];
+	while( readingDataCondition <=0)
+		[readingDataLock wait];
+	
+	[readingDataLock unlock];
+
+	// Wait until all data is read from the error pipe until we proceed
+	[readingErrorDataLock lock];
+	while( readingErrorDataCondition <=0)
+		[readingErrorDataLock wait];
+	
+	[readingErrorDataLock unlock];
+	
+	
+	if ( [self delegate] )
+		[(NSObject*)delegate performSelectorOnMainThread:@selector(taskDidTerminate:) withObject:self waitUntilDone:NO];
+}
+
+- (void) respondToTaskTermination:(NSNotification *)notification {
+	
+	
+	[NSThread detachNewThreadSelector:@selector(respondToTaskTerminationOnThread) toTarget:self withObject:nil];
+	
+}
+
+
+
 - (BOOL) launch {
 	if ( !delegate )
 		return NO;
-	
+		
 	// Setup the pipes on the task
 	NSPipe *outputPipe = [NSPipe pipe];
 	NSPipe *errorPipe = [NSPipe pipe];
@@ -101,8 +174,10 @@
 	
 	// Launch a thread to wait for data from the NSTask pipe object
 	[self waitForStandardOutputData]; 
+	[self waitForStandardErrorData];
 	
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToTaskTermination:) name:NSTaskDidTerminateNotification object:internal_task];
+
 	[internal_task launch];
 	
 	return YES;

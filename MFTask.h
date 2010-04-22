@@ -14,9 +14,17 @@
 @interface MFTask : NSObject {
 	id <MFTaskDelegateProtocol> delegate;
 	NSTask *internal_task;
+
+	// These are used to form a conditional lock allowing us to wait until all data is read before signalling competion to the delegate
+	NSInteger readingDataCondition;
+	NSCondition *readingDataLock;
+	
+	NSInteger readingErrorDataCondition;
+	NSCondition *readingErrorDataLock;
+	
 }
 
-@property (retain) id <MFTaskDelegateProtocol> delegate;
+@property (assign) id <MFTaskDelegateProtocol> delegate;
 
 
 //! Attempts to Launch the Task. Returns NO if it fails 
