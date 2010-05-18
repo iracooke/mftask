@@ -11,8 +11,9 @@
 
 @protocol MFTaskDelegateProtocol
 
-- (void) taskDidRecieveData:(NSData*) theData;
-- (void) taskDidRecieveErrorData:(NSData*) theData;
+- (void) taskDidRecieveData:(NSData*) theData fromTask:(MFTask*)task;
+- (void) taskDidRecieveErrorData:(NSData*) theData fromTask:(MFTask*)task;
 - (void) taskDidTerminate:(MFTask*) theTask;
+- (void) taskDidLaunch:(MFTask*) theTask;
 
 @end

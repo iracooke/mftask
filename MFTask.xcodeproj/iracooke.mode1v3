@@ -317,7 +317,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MFTask.m</string>
+								<string>MFTaskDelegate.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -325,11 +325,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MFTask.m</string>
+										<string>MFTaskDelegate.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>7530311F118042C900C904EB</string>
+										<string>75BF869D1180EF1C003BBAB7</string>
 										<key>history</key>
 										<array>
 											<string>75303033118023F000C904EB</string>
@@ -339,10 +339,7 @@
 											<string>75303118118042C900C904EB</string>
 											<string>75303119118042C900C904EB</string>
 											<string>7530311A118042C900C904EB</string>
-											<string>7530311B118042C900C904EB</string>
-											<string>7530311C118042C900C904EB</string>
-											<string>7530311D118042C900C904EB</string>
-											<string>7530311E118042C900C904EB</string>
+											<string>753031281180447100C904EB</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -400,9 +397,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>75303120118042C900C904EB</string>
+				<string>75BF869E1180EF1C003BBAB7</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>75303121118042C900C904EB</string>
+				<string>75BF869F1180EF1C003BBAB7</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -621,7 +618,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>756B164D112DE015005F30C4</string>
-				<string>75303122118042C900C904EB</string>
+				<string>75BF86A01180EF1C003BBAB7</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

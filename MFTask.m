@@ -10,16 +10,30 @@
 #import "MFTaskDelegateProtocol.h"
 
 @implementation MFTask
-@synthesize delegate;
+@synthesize delegate,tag,isFinished,hasRecievedTerminate;
+
+/*
+- (void) reportStatus {
+	if ([internal_task isRunning]){
+		DLog(@"Internal task %@ is running ",[self tag]);
+	} else {
+		DLog(@"Task %@ not running",[self tag]);
+	}
+}*/
 
 - (id) init {
 	if ( self=[super init]){
 		internal_task=[[NSTask alloc] init];
+		tag=nil;
+		delegate=nil;
+		isFinished=NO;
+//		[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(reportStatus) userInfo:nil repeats:YES];
 	}
 	return self;
 }
 
 - (void) dealloc {
+//	DLog(@"Deallocing task %@",[self tag]);
 	[internal_task release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:internal_task];
@@ -55,7 +69,13 @@
 
 
 - (void) terminate {
-	[internal_task terminate];
+	if ( [internal_task isRunning] ){
+		[internal_task terminate];
+	} else {
+		// This must occur on the next runloop which is why we call it like this
+		[self performSelector:@selector(performTaskDidTerminate) withObject:nil afterDelay:0];
+	}
+	[self setHasRecievedTerminate:YES];
 }
 
 - (BOOL) isRunning {
@@ -65,11 +85,15 @@
 
 
 - (void) giveDataToDelegate:(NSData*) data {
-	[delegate taskDidRecieveData:data];
+//	DLog(@"Giving data to delegate");
+	[delegate taskDidRecieveData:data fromTask:self];
+//	DLog(@"Finished giving data to delegate");
 }
 
 - (void) giveErrorDataToDelegate:(NSData*)data {
-	[delegate taskDidRecieveErrorData:data];
+//	DLog(@"Giving error data to delegate");
+	[delegate taskDidRecieveErrorData:data fromTask:self];
+//	DLog(@"Finished giving error data to delegate");
 }
 
 #pragma mark reading from NSTask output pipe
@@ -131,9 +155,17 @@
 							 toTarget:self withObject:nil];
 }
 
+- (void) performTaskDidTerminate {
+	[self setIsFinished:YES];
+	if ( [self delegate]!=nil )
+		[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
+}
+
 
 - (void) respondToTaskTerminationOnThread {
-	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+//	DLog(@"Task %@ responding to termination on thread",[self tag]);
+
 	// Wait until all data is read from the output pipe until we proceed
 	[readingDataLock lock];
 	while( readingDataCondition <=0)
@@ -148,13 +180,13 @@
 	
 	[readingErrorDataLock unlock];
 	
-	
-	if ( [self delegate] )
-		[(NSObject*)delegate performSelectorOnMainThread:@selector(taskDidTerminate:) withObject:self waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(performTaskDidTerminate) withObject:nil waitUntilDone:NO];
+
+	[pool release];
 }
 
 - (void) respondToTaskTermination:(NSNotification *)notification {
-	
+//	DLog(@"Task %@ recieved terminate notification",[self tag]);
 	
 	[NSThread detachNewThreadSelector:@selector(respondToTaskTerminationOnThread) toTarget:self withObject:nil];
 	
@@ -166,6 +198,9 @@
 	if ( !delegate )
 		return NO;
 		
+	if ([self hasRecievedTerminate])
+		return NO;
+	
 	// Setup the pipes on the task
 	NSPipe *outputPipe = [NSPipe pipe];
 	NSPipe *errorPipe = [NSPipe pipe];
@@ -178,7 +213,12 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToTaskTermination:) name:NSTaskDidTerminateNotification object:internal_task];
 
+	
 	[internal_task launch];
+	DLog(@"Task %@ launched",[self tag]);
+	
+	if ( delegate)
+		[delegate taskDidLaunch:self];
 	
 	return YES;
 }

@@ -22,9 +22,17 @@
 	NSInteger readingErrorDataCondition;
 	NSCondition *readingErrorDataLock;
 	
+	NSString *tag;
+	
+	BOOL isFinished;
+	BOOL hasRecievedTerminate;
+	
 }
 
+@property (retain) NSString * tag;
 @property (assign) id <MFTaskDelegateProtocol> delegate;
+@property (assign) BOOL isFinished;
+@property (assign) BOOL hasRecievedTerminate;
 
 
 //! Attempts to Launch the Task. Returns NO if it fails 
