@@ -10,7 +10,7 @@
 #import "MFTaskDelegateProtocol.h"
 
 @implementation MFTask
-@synthesize delegate,tag,isFinished,hasRecievedTerminate;
+@synthesize delegate,tag,hasLaunched,isFinished,hasPerformedTerminate;
 
 /*
 - (void) reportStatus {
@@ -70,12 +70,14 @@
 
 - (void) terminate {
 	if ( [internal_task isRunning] ){
+		// This lets the task go about its normal means of termination
 		[internal_task terminate];
 	} else {
+		// This would occur only if the task was unable to run, if it has terminated already. or it never started. Regardless we need to make sure cleanup is invoked
+		
 		// This must occur on the next runloop which is why we call it like this
 		[self performSelector:@selector(performTaskDidTerminate) withObject:nil afterDelay:0];
 	}
-	[self setHasRecievedTerminate:YES];
 }
 
 - (BOOL) isRunning {
@@ -155,10 +157,19 @@
 							 toTarget:self withObject:nil];
 }
 
+//! This method should notify the delegate of termination via the taskDidTerminate delegate method. It also notifies an MFTaskQueue of this by setting its isFinished property to YES.
 - (void) performTaskDidTerminate {
-	[self setIsFinished:YES];
-	if ( [self delegate]!=nil )
-		[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
+
+	if ( ![self hasPerformedTerminate] ){
+		[self setHasPerformedTerminate:YES];
+
+	
+		[self setIsFinished:YES];
+		if ( [self delegate]!=nil )
+			[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
+	} else {
+		NSLog(@"Attempted to perform terminate more than once on an MFTask");
+	}
 }
 
 
@@ -195,11 +206,19 @@
 
 
 - (BOOL) launch {
+	
+	NSAssert(delegate,@"Can't launch an MFTask without a delegate");
+
+	
 	if ( !delegate )
 		return NO;
 		
-	if ([self hasRecievedTerminate])
+	
+	
+	NSAssert(![self hasPerformedTerminate],@"Can't relaunch an MFTask");
+	if ( [self hasPerformedTerminate] )
 		return NO;
+
 	
 	// Setup the pipes on the task
 	NSPipe *outputPipe = [NSPipe pipe];
@@ -215,6 +234,7 @@
 
 	
 	[internal_task launch];
+	[self setHasLaunched:YES];
 	DLog(@"Task %@ launched",[self tag]);
 	
 	if ( delegate)

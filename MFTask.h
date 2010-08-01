@@ -25,14 +25,16 @@
 	NSString *tag;
 	
 	BOOL isFinished;
-	BOOL hasRecievedTerminate;
+	BOOL hasPerformedTerminate;
+	BOOL hasLaunched;
 	
 }
 
 @property (retain) NSString * tag;
 @property (assign) id <MFTaskDelegateProtocol> delegate;
 @property (assign) BOOL isFinished;
-@property (assign) BOOL hasRecievedTerminate;
+@property (assign) BOOL hasLaunched;
+@property (assign) BOOL hasPerformedTerminate;
 
 
 //! Attempts to Launch the Task. Returns NO if it fails 
