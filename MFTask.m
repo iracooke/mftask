@@ -10,7 +10,7 @@
 #import "MFTaskDelegateProtocol.h"
 
 @implementation MFTask
-@synthesize delegate,tag,hasLaunched,isFinished,hasPerformedTerminate;
+@synthesize delegate,tag,hasLaunched,isFinished;
 
 /*
 - (void) reportStatus {
@@ -160,8 +160,9 @@
 //! This method should notify the delegate of termination via the taskDidTerminate delegate method. It also notifies an MFTaskQueue of this by setting its isFinished property to YES.
 - (void) performTaskDidTerminate {
 
-	if ( ![self hasPerformedTerminate] ){
-		[self setHasPerformedTerminate:YES];
+	if ( !_hasPerformedTerminate ) {
+		_hasPerformedTerminate=YES;
+
 
 	
 		[self setIsFinished:YES];
@@ -215,10 +216,11 @@
 		
 	
 	
-	NSAssert(![self hasPerformedTerminate],@"Can't relaunch an MFTask");
-	if ( [self hasPerformedTerminate] )
+	NSAssert(!_hasPerformedTerminate,@"Can't relaunch an MFTask");
+	if ( _hasPerformedTerminate )
 		return NO;
 
+	NSAssert(![self hasLaunched],@"Can't launch an MFTask twice");
 	
 	// Setup the pipes on the task
 	NSPipe *outputPipe = [NSPipe pipe];
