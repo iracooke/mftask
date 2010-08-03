@@ -13,6 +13,8 @@
 		756B1644112DDFDB005F30C4 /* MFTask_Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 756B1643112DDFDB005F30C4 /* MFTask_Test.m */; };
 		756B1647112DDFE8005F30C4 /* MockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 756B1646112DDFE8005F30C4 /* MockDelegate.m */; };
 		756B1665112DE72A005F30C4 /* MFTaskDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 756B1664112DE72A005F30C4 /* MFTaskDelegate.m */; };
+		759B803112083FF700D02C80 /* MFTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 759B803012083FF700D02C80 /* MFTaskQueue.m */; };
+		759B803212083FF700D02C80 /* MFTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 759B803012083FF700D02C80 /* MFTaskQueue.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -52,6 +54,8 @@
 		756B1646112DDFE8005F30C4 /* MockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockDelegate.m; sourceTree = "<group>"; };
 		756B1663112DE72A005F30C4 /* MFTaskDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFTaskDelegate.h; sourceTree = "<group>"; };
 		756B1664112DE72A005F30C4 /* MFTaskDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFTaskDelegate.m; sourceTree = "<group>"; };
+		759B802F12083FF700D02C80 /* MFTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFTaskQueue.h; sourceTree = "<group>"; };
+		759B803012083FF700D02C80 /* MFTaskQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFTaskQueue.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MFTask-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MFTask-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MFTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MFTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -168,6 +172,8 @@
 		756B163A112DDF68005F30C4 /* MFTask */ = {
 			isa = PBXGroup;
 			children = (
+				759B802F12083FF700D02C80 /* MFTaskQueue.h */,
+				759B803012083FF700D02C80 /* MFTaskQueue.m */,
 				756B1641112DDFC0005F30C4 /* MFTaskDelegateProtocol.h */,
 				756B163E112DDFAA005F30C4 /* MFTask.h */,
 				756B163F112DDFAA005F30C4 /* MFTask.m */,
@@ -315,6 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				759B803112083FF700D02C80 /* MFTaskQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +342,7 @@
 				256AC3DA0F4B6AC300CF3369 /* MFTaskAppDelegate.m in Sources */,
 				756B1640112DDFAA005F30C4 /* MFTask.m in Sources */,
 				756B1665112DE72A005F30C4 /* MFTaskDelegate.m in Sources */,
+				759B803212083FF700D02C80 /* MFTaskQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
