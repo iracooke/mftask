@@ -13,7 +13,6 @@
 		756B1644112DDFDB005F30C4 /* MFTask_Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 756B1643112DDFDB005F30C4 /* MFTask_Test.m */; };
 		756B1647112DDFE8005F30C4 /* MockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 756B1646112DDFE8005F30C4 /* MockDelegate.m */; };
 		756B1665112DE72A005F30C4 /* MFTaskDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 756B1664112DE72A005F30C4 /* MFTaskDelegate.m */; };
-		759B803112083FF700D02C80 /* MFTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 759B803012083FF700D02C80 /* MFTaskQueue.m */; };
 		759B803212083FF700D02C80 /* MFTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 759B803012083FF700D02C80 /* MFTaskQueue.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -61,13 +60,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		752203891208392A00BB87FF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		756B1624112DDF08005F30C4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -199,8 +191,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 752203941208399900BB87FF /* Build configuration list for PBXNativeTarget "Documentation" */;
 			buildPhases = (
-				752203881208392A00BB87FF /* Sources */,
-				752203891208392A00BB87FF /* Frameworks */,
 				752203901208393D00BB87FF /* ShellScript */,
 			);
 			buildRules = (
@@ -317,14 +307,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		752203881208392A00BB87FF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				759B803112083FF700D02C80 /* MFTaskQueue.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		756B1623112DDF08005F30C4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;

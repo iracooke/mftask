@@ -143,4 +143,70 @@
     <Anchor>a6e4a857c39aaaaf63603cf0291277e0</Anchor>
     <Abstract>A flag indicating whether the task has launched. Set to true when launch is called...</Abstract>
   </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MFTaskQueue</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>cl</Type>
+      <Scope></Scope>
+    </TokenIdentifier>
+    <Path>interface_m_f_task_queue.html</Path>
+    <Abstract>A simple queue for MFTasks.</Abstract>
+    <DeclaredIn>MFTaskQueue.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>terminateAllTasks</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>MFTaskQueue</Scope>
+    </TokenIdentifier>
+    <Path>interface_m_f_task_queue.html</Path>
+    <Anchor>14a6fdfecb24738f201d59178ea1de52</Anchor>
+    <Abstract>Sends a terminate message to all tasks.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addTask:</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>MFTaskQueue</Scope>
+    </TokenIdentifier>
+    <Path>interface_m_f_task_queue.html</Path>
+    <Anchor>6f3b5706ad062cb9095eb5eb8826feb5</Anchor>
+    <Abstract>Adds a task to the queue, launching it immediately if possible.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>remainingTasks</Name>
+      <APILanguage>occ</APILanguage>
+      <Type>clm</Type>
+      <Scope>MFTaskQueue</Scope>
+    </TokenIdentifier>
+    <Path>interface_m_f_task_queue.html</Path>
+    <Anchor>826a243af79db03c9188c5da50d77c64</Anchor>
+    <Abstract>The number of remaining tasks.</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>staggerSeconds</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>property</Type>
+      <Scope>MFTaskQueue</Scope>
+    </TokenIdentifier>
+    <Path>interface_m_f_task_queue.html</Path>
+    <Anchor>8788617edd730509e327f9ddf23309fc</Anchor>
+    <Abstract>The number of seconds to wait between launching concurrent tasks. This can be useful...</Abstract>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>maxConcurrentTaskCount</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>property</Type>
+      <Scope>MFTaskQueue</Scope>
+    </TokenIdentifier>
+    <Path>interface_m_f_task_queue.html</Path>
+    <Anchor>877165fcf9feafa6d4b7fd880f58f3be</Anchor>
+    <Abstract>The maximum number of simultaneous tasks to run.</Abstract>
+  </Token>
 </Tokens>

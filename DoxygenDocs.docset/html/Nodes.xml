@@ -17,6 +17,10 @@
           <Name>&lt; MFTaskDelegateProtocol &gt;</Name>
           <Path>protocol_m_f_task_delegate_protocol-p.html</Path>
          </Node>
+         <Node>
+          <Name>MFTaskQueue</Name>
+          <Path>interface_m_f_task_queue.html</Path>
+         </Node>
         </Subnodes>
        </Node>
        <Node>
@@ -30,6 +34,10 @@
          <Node>
           <Name>&lt; MFTaskDelegateProtocol &gt;</Name>
           <Path>protocol_m_f_task_delegate_protocol-p.html</Path>
+         </Node>
+         <Node>
+          <Name>MFTaskQueue</Name>
+          <Path>interface_m_f_task_queue.html</Path>
          </Node>
         </Subnodes>
        </Node>
