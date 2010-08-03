@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocSetNodes version="1.0">
+  <TOC>
+    <Node>
+      <Name>Root</Name>
+      <Path>index.html</Path>
+      <Subnodes>
+       <Node>
+        <Name>Class List</Name>
+        <Path>annotated.html</Path>
+        <Subnodes>
+         <Node>
+          <Name>MFTask</Name>
+          <Path>interface_m_f_task.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt; MFTaskDelegateProtocol &gt;</Name>
+          <Path>protocol_m_f_task_delegate_protocol-p.html</Path>
+         </Node>
+        </Subnodes>
+       </Node>
+       <Node>
+        <Name>Class Hierarchy</Name>
+        <Path>hierarchy.html</Path>
+        <Subnodes>
+         <Node>
+          <Name>MFTask</Name>
+          <Path>interface_m_f_task.html</Path>
+         </Node>
+         <Node>
+          <Name>&lt; MFTaskDelegateProtocol &gt;</Name>
+          <Path>protocol_m_f_task_delegate_protocol-p.html</Path>
+         </Node>
+        </Subnodes>
+       </Node>
+       <Node>
+        <Name>Class Members</Name>
+        <Path>functions.html</Path>
+       </Node>
+       <Node>
+        <Name>File List</Name>
+        <Path>files.html</Path>
+        <Subnodes>
+        </Subnodes>
+       </Node>
+      </Subnodes>
+    </Node>
+  </TOC>
+</DocSetNodes>

@@ -73,10 +73,13 @@
 		// This lets the task go about its normal means of termination
 		[internal_task terminate];
 	} else {
-		// This would occur only if the task was unable to run, if it has terminated already. or it never started. Regardless we need to make sure cleanup is invoked
+		// This would occur only if the task was unable to run, if it has terminated already. or it never started. 
+		
+		// Only if the task was never started to we need to cleanup manually. 
 		
 		// This must occur on the next runloop which is why we call it like this
-		[self performSelector:@selector(performTaskDidTerminate) withObject:nil afterDelay:0];
+		if ( ![self hasLaunched] )
+			[self performSelector:@selector(performTaskDidTerminate) withObject:nil afterDelay:0];
 	}
 }
 
@@ -157,7 +160,7 @@
 							 toTarget:self withObject:nil];
 }
 
-//! This method should notify the delegate of termination via the taskDidTerminate delegate method. It also notifies an MFTaskQueue of this by setting its isFinished property to YES.
+// This method should notify the delegate of termination via the taskDidTerminate delegate method. It also notifies an MFTaskQueue of this by setting its isFinished property to YES.
 - (void) performTaskDidTerminate {
 
 	if ( !_hasPerformedTerminate ) {
@@ -207,20 +210,23 @@
 
 
 - (BOOL) launch {
-	
-	NSAssert(delegate,@"Can't launch an MFTask without a delegate");
-
-	
+		
 	if ( !delegate )
 		return NO;
 		
 	
 	
-	NSAssert(!_hasPerformedTerminate,@"Can't relaunch an MFTask");
+
+	
 	if ( _hasPerformedTerminate )
 		return NO;
 
-	NSAssert(![self hasLaunched],@"Can't launch an MFTask twice");
+	if ( [self hasLaunched] )
+		[NSException raise:NSGenericException format:@"Attempt to relaunch an MFTask"]; 
+	
+	if ( _hasPerformedTerminate )
+		[NSException raise:NSGenericException format:@"Attempt relaunch an MFTask that was terminated"]; 
+	
 	
 	// Setup the pipes on the task
 	NSPipe *outputPipe = [NSPipe pipe];

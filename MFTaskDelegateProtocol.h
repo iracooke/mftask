@@ -9,6 +9,9 @@
 #import <Cocoa/Cocoa.h>
 @class MFTask;
 
+/*! 
+ @abstract Formal protocol that must be implemented by delegates of MFTask 
+ */
 @protocol MFTaskDelegateProtocol
 
 - (void) taskDidRecieveData:(NSData*) theData fromTask:(MFTask*)task;
