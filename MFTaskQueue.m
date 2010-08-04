@@ -85,7 +85,7 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 			BOOL taskLaunched = [task launch];
 
 			if ( !taskLaunched ){
-				// If we failed to launch then KVO needs removing
+				// If we failed to launch then KVO needs removing here because isFinished will never be observed to change
 				[task removeObserver:self forKeyPath:@"isFinished"];
 			}
 			
