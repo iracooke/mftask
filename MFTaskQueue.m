@@ -27,13 +27,14 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 }
 
 - (void) dealloc {
-//	DLog(@"Deallocing taskqueue");
+	DLog(@"Deallocing taskqueue");
 	for(MFTask *task in tasks){	
 		if ( [task hasLaunched] )
 			[task removeObserver:self forKeyPath:@"isFinished"];
 	}
 	[tasks release];
 	
+	DLog(@"Done deallocing taskqueue %@",self);
 	[super dealloc];
 	
 }
@@ -79,9 +80,15 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 	for(MFTask *task in tasks){
 		
 		if ( ![task hasLaunched] && (maxNumToLaunch>0) ){
-				//	DLog(@"Starting task %@",[[task taskLog] fromPath]);
+			DLog(@"Adding observing to task %@",[task tag]);
 			[task addObserver:self forKeyPath:@"isFinished" options:0 context:MFTaskQueueKVOObservingContext];
-			[task launch];
+			BOOL taskLaunched = [task launch];
+
+			if ( !taskLaunched ){
+				// If we failed to launch then KVO needs removing
+				[task removeObserver:self forKeyPath:@"isFinished"];
+			}
+			
 			maxNumToLaunch--;
 			if ( maxNumToLaunch > 0 ){
 					//				DLog(@"Launching timer");

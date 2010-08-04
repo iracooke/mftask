@@ -37,7 +37,9 @@
 	[internal_task release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:internal_task];
-		
+
+	DLog(@"Deallocing mftask %@ %@",[self tag],[self observationInfo]);
+	
 	[super dealloc];
 }
 
@@ -172,7 +174,8 @@
 		if ( [self delegate]!=nil )
 			[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
 	} else {
-		NSLog(@"Attempted to perform terminate more than once on an MFTask");
+		// This shouldn't be a problem
+//		NSLog(@"Attempted to perform terminate more than once on an MFTask");
 	}
 }
 
@@ -211,9 +214,10 @@
 
 - (BOOL) launch {
 		
-	if ( !delegate )
+	if ( !delegate ){
+		[NSException raise:NSGenericException format:@"Attempt to launch MFTask wihout a delegate"];
 		return NO;
-		
+	}		
 	
 	
 
