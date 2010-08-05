@@ -25,7 +25,13 @@
 	BOOL waitingForTimer;
 	NSTimeInterval staggerSeconds;
 
+	BOOL waitsForTaskCompletion;
+	
 }
+
+/*! @abstract Whether to wait for tasks to completely clean up (YES), or to simply terminate them ignore any further data they might generate (NO). The default is NO
+ */
+@property (nonatomic,assign) BOOL waitsForTaskCompletion;
 
 /*! 
  @abstract The number of seconds to wait between launching concurrent tasks.  

@@ -12,14 +12,6 @@
 @implementation MFTask
 @synthesize delegate,tag,hasLaunched,isFinished;
 
-/*
-- (void) reportStatus {
-	if ([internal_task isRunning]){
-		DLog(@"Internal task %@ is running ",[self tag]);
-	} else {
-		DLog(@"Task %@ not running",[self tag]);
-	}
-}*/
 
 - (id) init {
 	if ( self=[super init]){
@@ -27,7 +19,9 @@
 		tag=nil;
 		delegate=nil;
 		isFinished=NO;
-//		[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(reportStatus) userInfo:nil repeats:YES];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToTaskTermination:) name:NSTaskDidTerminateNotification object:internal_task];
+
 	}
 	return self;
 }
@@ -38,51 +32,57 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:internal_task];
 
-	DLog(@"Deallocing mftask %@ %@",[self tag],[self observationInfo]);
+		//	DLog(@"Deallocing mftask %@ %@",[self tag],[self observationInfo]);
 	
 	[super dealloc];
 }
 
-//! Sets the arguments of the underlying NSTask
-- (void) setArguments:(NSArray*) arguments {
-	[internal_task setArguments:arguments];
+- (void) setDelegate:(NSObject <MFTaskDelegateProtocol>*) delegateObject {
+	if ( [delegateObject conformsToProtocol:@protocol(MFTaskDelegateProtocol)] ){
+		delegate=delegateObject;
+	} else {
+		[NSException raise:NSGenericException format:@"**Exception: MFTask cannot set delegate as the supplied object does not conform to the MFTaskDelegateProtocol"];
+	}
+
 }
 
-
-//! Sets the Current Directory Path on the underlying task
-- (void)setCurrentDirectoryPath:(NSString *)path {
-	[internal_task setCurrentDirectoryPath:path];
+	// This must be done outside of the terminate and invalidate methods because otherwise we would trigger for isFinished in MFTaskQueue while an array of MFTasks is enumerated
+- (void) performSetFinishedYES {
+	[self setIsFinished:YES];
 }
 
-//! Sets the Environment for the underlying NSTask
-- (void)setEnvironment:(NSDictionary *)environmentDictionary {
-	[internal_task setEnvironment:environmentDictionary];
-}
-
-//! Sets the Launch path to the executable used by the underlying NSTask
-- (void)setLaunchPath:(NSString *)path {
-	[internal_task setLaunchPath:path];
-}
-
-//! Sets the standard input pipe used by NSTask
-- (void) setStandardInput:(NSPipe*) inputPipe {
-	[internal_task setStandardInput:inputPipe];
-}
-
-
+	// This lets the task go about its normal means of termination. If the task was never launched then this simply sets the isFinished property to yes
 - (void) terminate {
+	_hasBeenSentTerminate=YES;
+
 	if ( [internal_task isRunning] ){
-		// This lets the task go about its normal means of termination
+
 		[internal_task terminate];
 	} else {
-		// This would occur only if the task was unable to run, if it has terminated already. or it never started. 
-		
-		// Only if the task was never started to we need to cleanup manually. 
-		
-		// This must occur on the next runloop which is why we call it like this
+			// If we get here it means the task was;
+			// 1. Never launched ... nothing to do. We set isFinished to YES
+			// 2. Waiting for task termination ... nothing to do.
+			// 3. Already dead but not yet deallocated ... nothing to do.
 		if ( ![self hasLaunched] )
-			[self performSelector:@selector(performTaskDidTerminate) withObject:nil afterDelay:0];
+				//			[self performSelector:@selector(performSetFinishedYES) withObject:nil afterDelay:0.0];
+			[self setIsFinished:YES];
 	}
+}
+
+- (void) invalidate {
+	NSLog(@"Invalidating task %@",[self tag]);
+	if ( !_hasBeenSentTerminate && [internal_task isRunning]){
+		[internal_task terminate];
+		
+	}
+	_hasBeenSentTerminate=YES;
+	[self setIsFinished:YES];	
+		// Now we abandon the task. So that the caller and the delegate can ignore it from now on
+	[delegate taskDidRecieveInvalidate:self];
+	delegate=nil;
+	NSLog(@"Done Invalidating task %@",[self tag]);
+		//	[self performSelector:@selector(performSetFinishedYES) withObject:nil afterDelay:0.0];
+
 }
 
 - (BOOL) isRunning {
@@ -92,13 +92,17 @@
 
 
 - (void) giveDataToDelegate:(NSData*) data {
-//	DLog(@"Giving data to delegate");
+	NSLog(@"Giving data to delegate");
+	
 	[delegate taskDidRecieveData:data fromTask:self];
-//	DLog(@"Finished giving data to delegate");
+
+		//	DLog(@"Finished giving data to delegate");
 }
 
 - (void) giveErrorDataToDelegate:(NSData*)data {
-//	DLog(@"Giving error data to delegate");
+
+	NSLog(@"Giving error data to delegate");
+		//	NSLog(@"Delegate %@",delegate);
 	[delegate taskDidRecieveErrorData:data fromTask:self];
 //	DLog(@"Finished giving error data to delegate");
 }
@@ -163,20 +167,22 @@
 }
 
 // This method should notify the delegate of termination via the taskDidTerminate delegate method. It also notifies an MFTaskQueue of this by setting its isFinished property to YES.
+// This method should only ever be called by the task itself after it recieves an NSTaskDidTerminate notification and has finished reading all data.
 - (void) performTaskDidTerminate {
 
-	if ( !_hasPerformedTerminate ) {
-		_hasPerformedTerminate=YES;
-
+	NSAssert(!_hasPerformedTerminate,@"Attempt to terminate a task more than once");
+	
+	_hasPerformedTerminate=YES;
+	
+	[self setIsFinished:YES];
+	if ( [self delegate]!=nil ){ // The delegate might be nil if this task was abandoned
+		[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
+			// From this point the delegate we set the delegate to nil for safety sake
+			// TODO: Set delegate to nil for safety but shouldn't need to. so leaving non-nil for debugging
+	}
+	NSLog(@"Task %@ terminating normally",[self tag]);
 
 	
-		[self setIsFinished:YES];
-		if ( [self delegate]!=nil )
-			[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
-	} else {
-		// This shouldn't be a problem
-//		NSLog(@"Attempted to perform terminate more than once on an MFTask");
-	}
 }
 
 
@@ -213,24 +219,22 @@
 
 
 - (BOOL) launch {
+	
+	if ( _hasPerformedTerminate )
+		return NO;
+	
+	if ( _hasBeenSentTerminate )
+		return NO;
 		
 	if ( !delegate ){
-		[NSException raise:NSGenericException format:@"Attempt to launch MFTask wihout a delegate"];
+		[NSException raise:NSGenericException format:@"**Exception: Attempt to launch MFTask wihout a delegate %@ %d",[self tag],[self isFinished]];
 		return NO;
 	}		
 	
-	
-
-	
-	if ( _hasPerformedTerminate )
+	if ( [self hasLaunched] ){
+		[NSException raise:NSGenericException format:@"**Exception: Attempt to relaunch an MFTask"]; 
 		return NO;
-
-	if ( [self hasLaunched] )
-		[NSException raise:NSGenericException format:@"Attempt to relaunch an MFTask"]; 
-	
-	if ( _hasPerformedTerminate )
-		[NSException raise:NSGenericException format:@"Attempt relaunch an MFTask that was terminated"]; 
-	
+	}
 	
 	// Setup the pipes on the task
 	NSPipe *outputPipe = [NSPipe pipe];
@@ -242,17 +246,50 @@
 	[self waitForStandardOutputData]; 
 	[self waitForStandardErrorData];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToTaskTermination:) name:NSTaskDidTerminateNotification object:internal_task];
 
 	
 	[internal_task launch];
 	[self setHasLaunched:YES];
-	DLog(@"Task %@ launched",[self tag]);
+
+	NSLog(@"Task %@ launched",[self tag]);
 	
 	if ( delegate)
 		[delegate taskDidLaunch:self];
 	
 	return YES;
 }
+
+
+
+	//! Sets the arguments of the underlying NSTask
+- (void) setArguments:(NSArray*) arguments {
+	[internal_task setArguments:arguments];
+}
+
+
+	//! Sets the Current Directory Path on the underlying task
+- (void)setCurrentDirectoryPath:(NSString *)path {
+	[internal_task setCurrentDirectoryPath:path];
+}
+
+	//! Sets the Environment for the underlying NSTask
+- (void)setEnvironment:(NSDictionary *)environmentDictionary {
+	[internal_task setEnvironment:environmentDictionary];
+}
+
+	//! Sets the Launch path to the executable used by the underlying NSTask
+- (void)setLaunchPath:(NSString *)path {
+	[internal_task setLaunchPath:path];
+}
+- (NSString*) launchPath {
+	return [internal_task launchPath];
+}
+
+
+	//! Sets the standard input pipe used by NSTask
+- (void) setStandardInput:(NSPipe*) inputPipe {
+	[internal_task setStandardInput:inputPipe];
+}
+
 
 @end

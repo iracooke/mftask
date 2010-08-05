@@ -17,6 +17,7 @@
 - (void) taskDidRecieveData:(NSData*) theData fromTask:(MFTask*)task;
 - (void) taskDidRecieveErrorData:(NSData*) theData fromTask:(MFTask*)task;
 - (void) taskDidTerminate:(MFTask*) theTask;
+- (void) taskDidRecieveInvalidate:(MFTask*) theTask;
 - (void) taskDidLaunch:(MFTask*) theTask;
 
 @end

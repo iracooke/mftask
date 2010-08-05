@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class MFTask;
+@class MFTask,MFTaskDelegate;
 
 @interface MFTaskAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
@@ -17,8 +17,12 @@
 	IBOutlet NSButton *startButton;
 	IBOutlet NSButton *stopButton;
 		
-	MFTask *currentTask;
+	IBOutlet NSArrayController *argsArrayController;
 	
+	NSMutableArray *arguments;
+	
+	MFTask *currentTask;
+	MFTaskDelegate *taskDelegate;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -29,9 +33,11 @@
 @property (retain) IBOutlet NSButton *stopButton;
 
 @property (retain) MFTask *currentTask;
+@property (retain) MFTaskDelegate *taskDelegate;
 
 -(IBAction) start:(id) sender;
 -(IBAction) stop:(id) sender;
 
+- (IBAction) clear:(id) sender;
 
 @end

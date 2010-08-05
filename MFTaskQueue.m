@@ -12,7 +12,7 @@
 static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingContext";
 
 @implementation MFTaskQueue
-@synthesize maxConcurrentTaskCount,staggerSeconds;
+@synthesize maxConcurrentTaskCount,staggerSeconds,waitsForTaskCompletion;
 
 - (id) init {
 	if ( self = [super init]){
@@ -27,25 +27,28 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 }
 
 - (void) dealloc {
-	DLog(@"Deallocing taskqueue");
+	NSLog(@"Deallocing taskqueue");
 	for(MFTask *task in tasks){	
 		if ( [task hasLaunched] )
 			[task removeObserver:self forKeyPath:@"isFinished"];
 	}
 	[tasks release];
 	
-	DLog(@"Done deallocing taskqueue %@",self);
+	NSLog(@"Done deallocing taskqueue %@",self);
 	[super dealloc];
 	
 }
 
 
 
-
 //! Send all tasks a terminate message
 - (void) terminateAllTasks {
 	for(MFTask *task in tasks){		
+		if ( [self waitsForTaskCompletion] ){
 			[task terminate];
+		} else {
+			[task invalidate];
+		}
 	}
 	staggerSeconds=0; // Set this so that we cancel things quickly
 }
@@ -80,7 +83,7 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 	for(MFTask *task in tasks){
 		
 		if ( ![task hasLaunched] && (maxNumToLaunch>0) ){
-			DLog(@"Adding observing to task %@",[task tag]);
+			NSLog(@"Adding observing to task %@",[task tag]);
 			[task addObserver:self forKeyPath:@"isFinished" options:0 context:MFTaskQueueKVOObservingContext];
 			BOOL taskLaunched = [task launch];
 
@@ -122,19 +125,21 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 			[object removeObserver:self forKeyPath:@"isFinished"];
 			
 			// Remove the task from the queue 
-			[tasks removeObject:object];	
-			
+			//			[tasks removeObject:object];	
+			[tasks performSelector:@selector(removeObject:) withObject:object afterDelay:0.0];
 			
 			if ( !waitingForTimer ){
 				
-				[self launchTasksIfNeeded];
+				[self performSelector:@selector(launchTasksIfNeeded) withObject:nil afterDelay:0.0];
+				
+					//				[self launchTasksIfNeeded];
 				
 			} else {
 			//	DLog(@"Waiting for timer");
 			}
 		} else {
 			// Should never get here
-			ALog(@"Warning: isFinished was unexpectedly set to NO after task initialization");
+			NSLog(@"Warning: isFinished was unexpectedly set to NO after task initialization");
 			
 		}
     } else {

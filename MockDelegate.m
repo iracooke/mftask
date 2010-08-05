@@ -12,11 +12,23 @@
 @implementation MockDelegate
 @synthesize outputData;
 
-- (void) taskDidRecieveData:(NSData*) theData {
+- (void) taskDidRecieveData:(NSData*) theData fromTask:(MFTask*) task {
 	[outputData appendData:theData];
 }
 
 - (void) taskDidTerminate:(MFTask*) theTask {
+	
+}
+
+- (void) taskDidRecieveErrorData:(NSData*) theData fromTask:(MFTask*)task {
+	
+}
+
+- (void) taskDidRecieveInvalidate:(MFTask*) theTask {
+	
+}
+
+- (void) taskDidLaunch:(MFTask*) theTask {
 	
 }
 
