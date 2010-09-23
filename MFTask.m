@@ -70,7 +70,7 @@
 }
 
 - (void) invalidate {
-	NSLog(@"Invalidating task %@",[self tag]);
+	DLog(@"Invalidating task %@",[self tag]);
 	if ( !_hasBeenSentTerminate && [internal_task isRunning]){
 		[internal_task terminate];
 		
@@ -80,7 +80,7 @@
 		// Now we abandon the task. So that the caller and the delegate can ignore it from now on
 	[delegate taskDidRecieveInvalidate:self];
 	delegate=nil;
-	NSLog(@"Done Invalidating task %@",[self tag]);
+	DLog(@"Done Invalidating task %@",[self tag]);
 		//	[self performSelector:@selector(performSetFinishedYES) withObject:nil afterDelay:0.0];
 
 }
@@ -92,19 +92,15 @@
 
 
 - (void) giveDataToDelegate:(NSData*) data {
-	NSLog(@"Giving data to delegate");
 	
 	[delegate taskDidRecieveData:data fromTask:self];
 
-		//	DLog(@"Finished giving data to delegate");
 }
 
 - (void) giveErrorDataToDelegate:(NSData*)data {
 
-	NSLog(@"Giving error data to delegate");
-		//	NSLog(@"Delegate %@",delegate);
 	[delegate taskDidRecieveErrorData:data fromTask:self];
-//	DLog(@"Finished giving error data to delegate");
+
 }
 
 #pragma mark reading from NSTask output pipe
@@ -180,7 +176,7 @@
 			// From this point the delegate we set the delegate to nil for safety sake
 			// TODO: Set delegate to nil for safety but shouldn't need to. so leaving non-nil for debugging
 	}
-	NSLog(@"Task %@ terminating normally",[self tag]);
+	DLog(@"Task %@ terminating normally",[self tag]);
 
 	
 }
@@ -251,7 +247,7 @@
 	[internal_task launch];
 	[self setHasLaunched:YES];
 
-	NSLog(@"Task %@ launched",[self tag]);
+	DLog(@"Task %@ launched",[self tag]);
 	
 	if ( delegate)
 		[delegate taskDidLaunch:self];

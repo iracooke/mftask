@@ -27,14 +27,14 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 }
 
 - (void) dealloc {
-	NSLog(@"Deallocing taskqueue");
+
 	for(MFTask *task in tasks){	
 		if ( [task hasLaunched] )
 			[task removeObserver:self forKeyPath:@"isFinished"];
 	}
 	[tasks release];
 	
-	NSLog(@"Done deallocing taskqueue %@",self);
+
 	[super dealloc];
 	
 }
@@ -83,7 +83,7 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 	for(MFTask *task in tasks){
 		
 		if ( ![task hasLaunched] && (maxNumToLaunch>0) ){
-			NSLog(@"Adding observing to task %@",[task tag]);
+
 			[task addObserver:self forKeyPath:@"isFinished" options:0 context:MFTaskQueueKVOObservingContext];
 			BOOL taskLaunched = [task launch];
 
@@ -139,7 +139,7 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 			}
 		} else {
 			// Should never get here
-			NSLog(@"Warning: isFinished was unexpectedly set to NO after task initialization");
+			ALog(@"Warning: isFinished was unexpectedly set to NO after task initialization");
 			
 		}
     } else {
