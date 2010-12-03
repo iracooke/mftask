@@ -70,7 +70,7 @@
 
 /*!
 @abstract Terminates the task
- If the task is running sends a message to the underlying NSTask telling it to terminate. After this method is called there may be some delay before isFinished is set to YES and the delegate selector taskDidTerminate is called. In the case that a task was not launched this method will set its isFinished flag to yes immediately.
+ If the task is running sends a message to the underlying NSTask telling it to terminate. After this method is called there may be some delay before isFinished is set to YES and the delegate selector taskDidTerminate is called. If the task has not yet been launched this method will set its isFinished flag to yes immediately.
  */
 - (void) terminate;
 
@@ -88,24 +88,53 @@
 - (BOOL) launch;
 
 
-
+#pragma mark Cover methods for NSTask
 
 //! Sets the arguments of the underlying NSTask. See the corresponding method of NSTask
 - (void) setArguments:(NSArray*) arguments;
 
+//! Arguments of the underlying NSTask. See the corresponding method of NSTask
+- (NSArray *)arguments;
+
 //! Sets the Current Directory Path on the underlying task. See the corresponding method of NSTask
 - (void)setCurrentDirectoryPath:(NSString *)path;
+
+//! Current directory path of the underlying task. See the corresponding method of NSTask
+- (NSString*) currentDirectoryPath;
 
 //! Sets the Environment for the underlying NSTask. See the corresponding method of NSTask
 - (void)setEnvironment:(NSDictionary *)environmentDictionary;
 
+//! The environment dictionary of the underlying nstask. See the corresponding method of NSTask
+- (NSDictionary*) environment;
+
 //! Sets the Launch path to the executable. See the corresponding method of NSTask
 - (void)setLaunchPath:(NSString *)path;
+
+//! The launch path of the task. See the corresponding method of NSTask
 - (NSString*) launchPath;
 
 
 //! Sets the standard input pipe. See the corresponding method of NSTask
 - (void) setStandardInput:(NSPipe*) inputPipe;
+
+//! The standard input file of the underlying NSTask. See the corresponding method of NSTask
+- (id)standardInput;
+
+//! The standard output file of the underlying NSTask. See the corresponding method of NSTask
+- (id)standardOutput;
+
+//! The standard error file of the underlying NSTask. See the corresponding method of NSTask
+- (id) standardError;
+
+//! The underlying task's process identifier. See the corresponding method of NSTask
+- (int)processIdentifier;
+
+//! The termination status of the underlying task. See the corresponding method of NSTask
+- (int)terminationStatus;
+
+//! The termination reason of the underlying task. See the corresponding method of NSTask
+- (NSTaskTerminationReason)terminationReason;
 
 /*! @abstract Whether the underlying task is running. See the corresponding method of NSTask */
 - (BOOL) isRunning;

@@ -251,16 +251,33 @@
 	[internal_task setArguments:arguments];
 }
 
+- (NSArray *)arguments {
+	return [internal_task arguments];
+}
+
+
+
+
 
 	//! Sets the Current Directory Path on the underlying task
 - (void)setCurrentDirectoryPath:(NSString *)path {
 	[internal_task setCurrentDirectoryPath:path];
 }
 
+- (NSString*) currentDirectoryPath {
+	return [internal_task currentDirectoryPath];
+}
+
+
 	//! Sets the Environment for the underlying NSTask
 - (void)setEnvironment:(NSDictionary *)environmentDictionary {
 	[internal_task setEnvironment:environmentDictionary];
 }
+
+- (NSDictionary*) environment {
+	return [internal_task environment];
+}
+
 
 	//! Sets the Launch path to the executable used by the underlying NSTask
 - (void)setLaunchPath:(NSString *)path {
@@ -275,6 +292,31 @@
 - (void) setStandardInput:(NSPipe*) inputPipe {
 	[internal_task setStandardInput:inputPipe];
 }
+
+- (id)standardInput {
+	return [internal_task standardInput];
+}
+
+- (id)standardOutput {
+	return [internal_task standardOutput];
+}
+
+- (id) standardError {
+	return [internal_task standardError];
+}
+
+- (int)processIdentifier {
+	return [internal_task processIdentifier];
+}
+
+- (int)terminationStatus {
+	return [internal_task terminationStatus];
+}
+
+- (NSTaskTerminationReason)terminationReason {
+	return [internal_task terminationReason];
+}
+
 
 
 @end
