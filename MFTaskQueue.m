@@ -139,7 +139,6 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 			}
 		} else {
 			// Should never get here
-			ALog(@"Warning: isFinished was unexpectedly set to NO after task initialization");
 			
 		}
     } else {

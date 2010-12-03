@@ -27,13 +27,10 @@
 }
 
 - (void) dealloc {
-//	DLog(@"Deallocing task %@",[self tag]);
 	[internal_task release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:internal_task];
 
-		//	DLog(@"Deallocing mftask %@ %@",[self tag],[self observationInfo]);
-	
 	[super dealloc];
 }
 
@@ -70,7 +67,6 @@
 }
 
 - (void) invalidate {
-	DLog(@"Invalidating task %@",[self tag]);
 	if ( !_hasBeenSentTerminate && [internal_task isRunning]){
 		[internal_task terminate];
 		
@@ -80,7 +76,6 @@
 		// Now we abandon the task. So that the caller and the delegate can ignore it from now on
 	[delegate taskDidRecieveInvalidate:self];
 	delegate=nil;
-	DLog(@"Done Invalidating task %@",[self tag]);
 		//	[self performSelector:@selector(performSetFinishedYES) withObject:nil afterDelay:0.0];
 
 }
@@ -176,8 +171,6 @@
 			// From this point the delegate we set the delegate to nil for safety sake
 			// TODO: Set delegate to nil for safety but shouldn't need to. so leaving non-nil for debugging
 	}
-	DLog(@"Task %@ terminating normally",[self tag]);
-
 	
 }
 
@@ -206,8 +199,6 @@
 }
 
 - (void) respondToTaskTermination:(NSNotification *)notification {
-//	DLog(@"Task %@ recieved terminate notification",[self tag]);
-	
 	[NSThread detachNewThreadSelector:@selector(respondToTaskTerminationOnThread) toTarget:self withObject:nil];
 	
 }
@@ -246,8 +237,6 @@
 	
 	[internal_task launch];
 	[self setHasLaunched:YES];
-
-	DLog(@"Task %@ launched",[self tag]);
 	
 	if ( delegate)
 		[delegate taskDidLaunch:self];
