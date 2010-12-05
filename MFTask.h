@@ -133,9 +133,6 @@
 //! The termination status of the underlying task. See the corresponding method of NSTask
 - (int)terminationStatus;
 
-//! The termination reason of the underlying task. See the corresponding method of NSTask
-- (NSTaskTerminationReason)terminationReason;
-
 /*! @abstract Whether the underlying task is running. See the corresponding method of NSTask */
 - (BOOL) isRunning;
 

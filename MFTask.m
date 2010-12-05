@@ -313,10 +313,6 @@
 	return [internal_task terminationStatus];
 }
 
-- (NSTaskTerminationReason)terminationReason {
-	return [internal_task terminationReason];
-}
-
 
 
 @end
