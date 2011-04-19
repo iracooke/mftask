@@ -229,6 +229,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -307,14 +309,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>MFTask.h</string>
+								<string>MFTaskAppDelegate.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -322,11 +322,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>MFTask.h</string>
+										<string>MFTaskAppDelegate.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>75DBDF8812AB5B29007331CB</string>
+										<string>75DBE02B12AB7062007331CB</string>
 										<key>history</key>
 										<array>
 											<string>759B7FFB12083D6D00D02C80</string>
@@ -343,13 +343,13 @@
 											<string>751DD78412A98D4B000960CD</string>
 											<string>751DD78B12A9C795000960CD</string>
 											<string>751DD78C12A9C795000960CD</string>
-											<string>751DD78D12A9C795000960CD</string>
 											<string>751DD78E12A9C795000960CD</string>
 											<string>751DD78F12A9C795000960CD</string>
 											<string>751DD79012A9C795000960CD</string>
 											<string>751DD79112A9C795000960CD</string>
-											<string>75DBDF8612AB5B29007331CB</string>
-											<string>75DBDF8712AB5B29007331CB</string>
+											<string>75DBE02812AB7062007331CB</string>
+											<string>75DBE02912AB7062007331CB</string>
+											<string>75DBE02A12AB7062007331CB</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -576,7 +576,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>MFTaskAppDelegate.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -593,6 +593,8 @@
 							<string>440pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
