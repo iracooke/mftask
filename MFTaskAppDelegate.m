@@ -86,7 +86,6 @@
 		[argVals addObject:[arg value]];
 	}
 	
-		 NSLog(@"Task arguments %@",argVals);
 		 
 	[currentTask setArguments:argVals];
 	

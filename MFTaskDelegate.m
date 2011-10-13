@@ -14,7 +14,6 @@
 
 - (void) taskDidRecieveData:(NSData*) theData fromTask:(MFTask*) task {
 	NSString *stringRep = [[NSString alloc] initWithData:theData encoding:NSASCIIStringEncoding];
-	NSLog(@"%@\n",stringRep);
 	
 	NSMutableAttributedString *outputStore = [outputView textStorage];
 	
