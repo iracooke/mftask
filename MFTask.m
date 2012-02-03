@@ -34,15 +34,6 @@
 	[super dealloc];
 }
 
-- (void) setDelegate:(NSObject <MFTaskDelegateProtocol>*) delegateObject {
-	if ( [delegateObject conformsToProtocol:@protocol(MFTaskDelegateProtocol)] ){
-		delegate=delegateObject;
-	} else {
-		[NSException raise:NSGenericException format:@"**Exception: MFTask cannot set delegate as the supplied object does not conform to the MFTaskDelegateProtocol"];
-	}
-
-}
-
 	// This must be done outside of the terminate and invalidate methods because otherwise we would trigger for isFinished in MFTaskQueue while an array of MFTasks is enumerated
 - (void) performSetFinishedYES {
 	[self setIsFinished:YES];
@@ -61,7 +52,6 @@
 			// 2. Waiting for task termination ... nothing to do.
 			// 3. Already dead but not yet deallocated ... nothing to do.
 		if ( ![self hasLaunched] )
-				//			[self performSelector:@selector(performSetFinishedYES) withObject:nil afterDelay:0.0];
 			[self setIsFinished:YES];
 	}
 }
@@ -76,7 +66,6 @@
 		// Now we abandon the task. So that the caller and the delegate can ignore it from now on
 	[delegate taskDidRecieveInvalidate:self];
 	delegate=nil;
-		//	[self performSelector:@selector(performSetFinishedYES) withObject:nil afterDelay:0.0];
 
 }
 
@@ -166,11 +155,8 @@
 	_hasPerformedTerminate=YES;
 	
 	[self setIsFinished:YES];
-	if ( [self delegate]!=nil ){ // The delegate might be nil if this task was abandoned
-		[(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
-			// From this point the delegate we set the delegate to nil for safety sake
-			// TODO: Set delegate to nil for safety but shouldn't need to. so leaving non-nil for debugging
-	}
+
+    [(NSObject<MFTaskDelegateProtocol>*)delegate taskDidTerminate:self];	
 	
 }
 

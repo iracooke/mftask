@@ -28,6 +28,9 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 
 - (void) dealloc {
 
+    if ( [launchTimer isValid] )
+        [launchTimer invalidate];
+    
 	for(MFTask *task in tasks){	
 		if ( [task hasLaunched] )
 			[task removeObserver:self forKeyPath:@"isFinished"];
@@ -96,7 +99,7 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 			if ( maxNumToLaunch > 0 ){
 					//				DLog(@"Launching timer");
 					// We still need to start more but we need to wait a bit or ssh will lock us out
-				[NSTimer scheduledTimerWithTimeInterval:staggerSeconds target:self selector:@selector(launchTasksIfNeeded) userInfo:nil repeats:NO];
+				launchTimer=[NSTimer scheduledTimerWithTimeInterval:staggerSeconds target:self selector:@selector(launchTasksIfNeeded) userInfo:nil repeats:NO];
 				waitingForTimer=YES;
 				return;
 			}

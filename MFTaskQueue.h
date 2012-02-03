@@ -25,6 +25,8 @@
 	BOOL waitingForTimer;
 	NSTimeInterval staggerSeconds;
 
+    NSTimer *launchTimer;
+    
 	BOOL waitsForTaskCompletion;
 	
 }
