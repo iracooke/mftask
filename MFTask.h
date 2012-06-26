@@ -16,7 +16,7 @@
  @discussion Provides an API for NSTask objects that is more similar to NSURLConnection. All output from the task can easily be captured via the delegate methods defined in MFTaskDelegateProtocol. MFTask objects accept a tag so that a delegate can recognise output from multiple tasks. Although a standard input pipe can be set, the standard output and standard input are managed internally.
  */
 @interface MFTask : NSObject {
-	NSObject <MFTaskDelegateProtocol>* delegate;
+	NSObject <MFTaskDelegateProtocol>* __unsafe_unretained delegate;
 	NSTask *internal_task;
 
 	// These are used to form a conditional lock allowing us to wait until all data is read before signalling competion to the delegate
@@ -40,12 +40,12 @@
 /*!
  @abstract A Tag that can be used to identify an MFTask
  */
-@property (retain) NSString * tag;
+@property  NSString * tag;
 
 /*! 
  @abstract A delegate object that conforms to the MFTaskDelegateProtocol 
 */
-@property (assign) NSObject <MFTaskDelegateProtocol>* delegate;
+@property (unsafe_unretained) NSObject <MFTaskDelegateProtocol>* delegate;
 
 /*!
  @abstract A flag indicating whether this MFTask has finished execution.

@@ -27,11 +27,9 @@
 }
 
 - (void) dealloc {
-	[internal_task release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSTaskDidTerminateNotification object:internal_task];
 
-	[super dealloc];
 }
 
 	// This must be done outside of the terminate and invalidate methods because otherwise we would trigger for isFinished in MFTaskQueue while an array of MFTasks is enumerated
@@ -89,24 +87,24 @@
 
 #pragma mark reading from NSTask output pipe
 - (void) waitForStandardOutputDataOnThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	[readingDataLock lock];
-	
-	NSAssert(internal_task,@"Must have a task");
-	NSFileHandle *readHandle = [[internal_task standardOutput] fileHandleForReading];
-	NSAssert(readHandle!=nil,@" Task must have a standardoutput handle");
-	
+		[readingDataLock lock];
+		
+		NSAssert(internal_task,@"Must have a task");
+		NSFileHandle *readHandle = [[internal_task standardOutput] fileHandleForReading];
+		NSAssert(readHandle!=nil,@" Task must have a standardoutput handle");
+		
 
-	NSData *readData;	
-	while ( [readData = [readHandle availableData] length]){		
-		[self performSelectorOnMainThread:@selector(giveDataToDelegate:) withObject:readData waitUntilDone:YES];
+		NSData *readData;	
+		while ( [readData = [readHandle availableData] length]){		
+			[self performSelectorOnMainThread:@selector(giveDataToDelegate:) withObject:readData waitUntilDone:YES];
+		}
+		
+		readingDataCondition++;
+		[readingDataLock signal];
+		[readingDataLock unlock];
 	}
-	
-	readingDataCondition++;
-	[readingDataLock signal];
-	[readingDataLock unlock];
-	[pool release];
 
 }
 
@@ -119,24 +117,24 @@
 
 #pragma mark reading from NSTask error pipe
 - (void) waitForStandardErrorDataOnThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	
-	[readingErrorDataLock lock];
-	
-	NSAssert(internal_task,@"Must have a task");
-	NSFileHandle *readHandle = [[internal_task standardError] fileHandleForReading];
-	NSAssert(readHandle!=nil,@" Task must have a standarderror handle");
-	
-	
-	NSData *readData;	
-	while ( [readData = [readHandle availableData] length]){		
-		[self performSelectorOnMainThread:@selector(giveErrorDataToDelegate:) withObject:readData waitUntilDone:YES];
+		[readingErrorDataLock lock];
+		
+		NSAssert(internal_task,@"Must have a task");
+		NSFileHandle *readHandle = [[internal_task standardError] fileHandleForReading];
+		NSAssert(readHandle!=nil,@" Task must have a standarderror handle");
+		
+		
+		NSData *readData;	
+		while ( [readData = [readHandle availableData] length]){		
+			[self performSelectorOnMainThread:@selector(giveErrorDataToDelegate:) withObject:readData waitUntilDone:YES];
+		}
+		
+		readingErrorDataCondition++;
+		[readingErrorDataLock signal];
+		[readingErrorDataLock unlock];
 	}
-	
-	readingErrorDataCondition++;
-	[readingErrorDataLock signal];
-	[readingErrorDataLock unlock];
-	[pool release];
 	
 }
 
@@ -162,26 +160,26 @@
 
 
 - (void) respondToTaskTerminationOnThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 //	DLog(@"Task %@ responding to termination on thread",[self tag]);
 
 	// Wait until all data is read from the output pipe until we proceed
-	[readingDataLock lock];
-	while( readingDataCondition <=0)
-		[readingDataLock wait];
-	
-	[readingDataLock unlock];
+		[readingDataLock lock];
+		while( readingDataCondition <=0)
+			[readingDataLock wait];
+		
+		[readingDataLock unlock];
 
-	// Wait until all data is read from the error pipe until we proceed
-	[readingErrorDataLock lock];
-	while( readingErrorDataCondition <=0)
-		[readingErrorDataLock wait];
-	
-	[readingErrorDataLock unlock];
-	
-	[self performSelectorOnMainThread:@selector(performTaskDidTerminate) withObject:nil waitUntilDone:NO];
+		// Wait until all data is read from the error pipe until we proceed
+		[readingErrorDataLock lock];
+		while( readingErrorDataCondition <=0)
+			[readingErrorDataLock wait];
+		
+		[readingErrorDataLock unlock];
+		
+		[self performSelectorOnMainThread:@selector(performTaskDidTerminate) withObject:nil waitUntilDone:NO];
 
-	[pool release];
+	}
 }
 
 - (void) respondToTaskTermination:(NSNotification *)notification {

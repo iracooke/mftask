@@ -9,7 +9,7 @@
 #import "MFTaskQueue.h"
 #import "MFTask.h"
 
-static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingContext";
+static void *const MFTaskQueueKVOObservingContext=(__bridge void*)@"MFTaskQueueKVOObservingContext";
 
 @implementation MFTaskQueue
 @synthesize maxConcurrentTaskCount,staggerSeconds,waitsForTaskCompletion;
@@ -35,10 +35,8 @@ static NSString *const MFTaskQueueKVOObservingContext=@"MFTaskQueueKVOObservingC
 		if ( [task hasLaunched] )
 			[task removeObserver:self forKeyPath:@"isFinished"];
 	}
-	[tasks release];
 	
 
-	[super dealloc];
 	
 }
 
